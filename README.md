@@ -1,8 +1,16 @@
 # Cross Version MySQL Replication Stack
 
 This is a docker compose stack that sets up binlog replication between a MySQL
-5.7 primary and MySQL 8 replica. It can be a used a component in a dev
-environment for experimenting with MySQL cross version replication.
+5.7 primary MySQL 8 replicas. It can be a used a component in a dev environment
+for experimenting with MySQL cross version replication.
+
+## Rough diagram
+
+```mermaid
+graph TD;
+    A[MySQL 5.7] --> B[MySQL 8.0];
+    B --> C[MySQL 8.0];
+```
 
 ## How to use
 
@@ -15,6 +23,11 @@ docker compose up -d
 Connect to MySQL 8 Replica
 ```
 mysql -h 127.0.0.1 -u root -pnotprodpassword -P 3307 --database testdb
+```
+
+Connect to MySQL 8 Replica (chained from the first)
+```
+mysql -h 127.0.0.1 -u root -pnotprodpassword -P 3308 --database testdb
 ```
 
 Connect to MySQL 5.7 primary
@@ -50,4 +63,10 @@ Read it from the replica
 
 ```
 mysql -h 127.0.0.1 -u root -pnotprodpassword -P 3307 --database testdb -e "select * from users\G"
+```
+
+Read it from the second replica, which is chained from the first
+
+```
+mysql -h 127.0.0.1 -u root -pnotprodpassword -P 3308 --database testdb -e "select * from users\G"
 ```
