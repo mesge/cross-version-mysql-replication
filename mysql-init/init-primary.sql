@@ -5,3 +5,6 @@ CREATE DATABASE IF NOT EXISTS testdb;
 CREATE USER 'replicator'@'%' IDENTIFIED WITH mysql_native_password BY 'notprodpassword';
 GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'%';
 FLUSH PRIVILEGES;
+
+CREATE USER 'user'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+GRANT PROCESS, REPLICATION SLAVE, REPLICATION CLIENT, RELOAD, LOCK TABLES, EXECUTE, SELECT, UPDATE, INSERT, DELETE ON *.* TO 'mysql-mover'@'%';

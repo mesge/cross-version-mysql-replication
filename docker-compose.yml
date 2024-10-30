@@ -31,7 +31,7 @@ services:
       - mysql-primary
     networks:
       - mysql-network
-  mysql-replica-2:
+  mysql-destination:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: notprodpassword
@@ -39,9 +39,8 @@ services:
     ports:
       - "3308:3306"
     volumes:
-      - replica2-data:/var/lib/mysql
-      - ./mysql-init/setup-replica2.sh:/docker-entrypoint-initdb.d/setup-replica.sh
-      - ./mysql-config/replica2.cnf:/etc/mysql/conf.d/my.cnf
+      - destination-data:/var/lib/mysql
+      - ./mysql-config/destination.cnf:/etc/mysql/conf.d/my.cnf
     depends_on:
       - mysql-primary
     networks:
@@ -50,7 +49,7 @@ services:
 volumes:
   primary-data:
   replica-data:
-  replica2-data:
+  destination-data:
 
 networks:
   mysql-network:
