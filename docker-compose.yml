@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mysql-primary:
+    image: biarms/mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: notprodpassword
+      MYSQL_DATABASE: testdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - primary-data:/var/lib/mysql
+      - ./mysql-init/init-primary.sql:/docker-entrypoint-initdb.d/init-primary.sql
+      - ./mysql-config/primary.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - mysql-network
+
+  mysql-replica:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: notprodpassword
+      MYSQL_DATABASE: testdb
+    ports:
+      - "3307:3306"
+    volumes:
+      - replica-data:/var/lib/mysql
+      - ./mysql-init/setup-replica.sh:/docker-entrypoint-initdb.d/setup-replica.sh
+      - ./mysql-config/replica.cnf:/etc/mysql/conf.d/my.cnf
+    depends_on:
+      - mysql-primary
+    # entrypoint: ["/bin/bash", "/docker-entrypoint-initdb.d/setup-replica.sh"]
+    networks:
+      - mysql-network
+
+volumes:
+  primary-data:
+  replica-data:
+
+networks:
+  mysql-network:
