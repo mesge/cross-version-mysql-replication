@@ -1,8 +1,8 @@
 [mysqld]
 skip-name-resolve
-server-id=2
+server-id=3
 relay-log=mysql-relay-bin
-log_bin=1
+log_bin=mysql-bin
 character-set-server=utf8mb4
 collation-server=utf8mb4_unicode_ci
 

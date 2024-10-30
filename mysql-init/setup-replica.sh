@@ -22,6 +22,3 @@ CHANGE REPLICATION SOURCE TO
 
 START REPLICA;
 EOF
-
-# Create the users table on the primary
-mysql -h mysql-primary -u root -pnotprodpassword --database testdb -e "CREATE TABLE users (id INT, name VARCHAR(255))\G"
